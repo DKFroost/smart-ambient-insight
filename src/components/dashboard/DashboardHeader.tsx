@@ -1,7 +1,11 @@
 import { Wifi, Brain, Sparkles } from "lucide-react";
-import { devices } from "@/data/devices";
+import type { Device } from "@/hooks/useDevices";
 
-export function DashboardHeader() {
+interface DashboardHeaderProps {
+  devices: Device[];
+}
+
+export function DashboardHeader({ devices }: DashboardHeaderProps) {
   const onlineCount = devices.filter((d) => d.status === "online").length;
   const anomalyCount = devices.filter((d) => d.anomaly).length;
 
@@ -14,7 +18,6 @@ export function DashboardHeader() {
       </div>
 
       <div className="flex items-center gap-4">
-        {/* AI Status */}
         <div className="flex items-center gap-1.5 text-xs bg-primary/10 text-primary px-3 py-1.5 rounded-full border border-primary/20">
           <Sparkles className="w-3 h-3" />
           <span className="font-medium">IA Ativa</span>

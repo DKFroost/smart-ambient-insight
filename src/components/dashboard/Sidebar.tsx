@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { LayoutDashboard, Radio, Settings, Cpu, Brain, ChevronRight } from "lucide-react";
-import { devices } from "@/data/devices";
+import type { Device } from "@/hooks/useDevices";
 
 const navItems = [
   { label: "Visão Geral", icon: LayoutDashboard, active: true, section: "MONITORAMENTO" },
@@ -9,10 +9,13 @@ const navItems = [
   { label: "Insights IA", icon: Brain, active: false, section: "INTELIGÊNCIA" },
 ];
 
-export function Sidebar() {
+interface SidebarProps {
+  devices: Device[];
+}
+
+export function Sidebar({ devices }: SidebarProps) {
   return (
     <aside className="w-64 min-h-screen bg-sidebar border-r border-sidebar-border flex flex-col shrink-0">
-      {/* Brand */}
       <div className="p-5 border-b border-sidebar-border">
         <div className="flex items-center gap-2.5">
           <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center">
@@ -25,9 +28,8 @@ export function Sidebar() {
         </div>
       </div>
 
-      {/* Navigation */}
       <nav className="flex-1 p-3 space-y-1">
-        {navItems.map((item, i) => (
+        {navItems.map((item) => (
           <div key={item.label}>
             {item.section && (
               <p className="text-[10px] font-semibold text-muted-foreground tracking-widest uppercase px-3 mt-4 mb-2">
@@ -49,7 +51,6 @@ export function Sidebar() {
           </div>
         ))}
 
-        {/* Devices list */}
         <p className="text-[10px] font-semibold text-muted-foreground tracking-widest uppercase px-3 mt-6 mb-2">
           DISPOSITIVOS ({devices.length})
         </p>
@@ -74,7 +75,6 @@ export function Sidebar() {
         </div>
       </nav>
 
-      {/* Footer */}
       <div className="p-4 border-t border-sidebar-border">
         <p className="text-[10px] text-muted-foreground">v2.4.0 · AI Engine v3.1</p>
       </div>
