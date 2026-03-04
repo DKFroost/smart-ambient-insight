@@ -4,7 +4,7 @@ import type { Device } from "@/data/devices";
 
 const statusConfig = {
   online: { label: "ONLINE", className: "bg-success/15 text-success border-success/20" },
-  maintenance: { label: "MANUTENÇÃO", className: "bg-warning/15 text-warning border-warning/20" },
+  maintenance: { label: "MANUTENÇÃO", className: "bg-maintenance/15 text-maintenance border-maintenance/20" },
   offline: { label: "OFFLINE", className: "bg-destructive/15 text-destructive border-destructive/20" },
 };
 
