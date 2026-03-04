@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Thermometer, Droplets, Battery, Lock, LockOpen, Brain, AlertTriangle } from "lucide-react";
-import type { Device } from "@/data/devices";
+import type { Device } from "@/hooks/useDevices";
 
 const statusConfig = {
   online: { label: "ONLINE", className: "bg-success/15 text-success border-success/20" },
@@ -27,10 +27,8 @@ export function DeviceCard({ device, index }: DeviceCardProps) {
         isCritical ? "border-warning/30" : ""
       }`}
     >
-      {/* AI glow effect on hover */}
       <div className="absolute inset-0 bg-gradient-to-br from-primary/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
-      {/* Header */}
       <div className="flex items-start justify-between mb-4">
         <h3 className="text-sm font-semibold text-foreground leading-tight pr-2 max-w-[70%]">
           {device.name}
@@ -40,19 +38,17 @@ export function DeviceCard({ device, index }: DeviceCardProps) {
         </span>
       </div>
 
-      {/* Temperature */}
       <div className="flex items-baseline gap-1.5 mb-4">
         <Thermometer className={`w-4 h-4 shrink-0 ${isCritical ? "text-warning" : "text-primary"}`} />
         <span className="text-[10px] text-muted-foreground font-medium uppercase tracking-wide">Temp</span>
         <span className={`text-3xl font-bold font-mono tracking-tighter ml-1 ${
           isCritical ? "text-warning" : "text-foreground"
         }`}>
-          {device.temperature.toFixed(2)}°C
+          {Number(device.temperature).toFixed(2)}°C
         </span>
       </div>
 
-      {/* AI Insight */}
-      {device.aiInsight && (
+      {device.ai_insight && (
         <div className={`flex items-start gap-1.5 mb-4 p-2 rounded-md text-[11px] ${
           isCritical
             ? "bg-warning/5 text-warning/80 border border-warning/10"
@@ -63,15 +59,14 @@ export function DeviceCard({ device, index }: DeviceCardProps) {
           ) : (
             <Brain className="w-3 h-3 shrink-0 mt-0.5" />
           )}
-          <span className="leading-tight">{device.aiInsight}</span>
+          <span className="leading-tight">{device.ai_insight}</span>
         </div>
       )}
 
-      {/* Footer metrics */}
       <div className="flex items-center gap-3 text-[11px] text-muted-foreground flex-wrap">
         <span className="flex items-center gap-1">
           <Droplets className="w-3 h-3" />
-          {device.humidity}%
+          {Number(device.humidity)}%
         </span>
         <span className="flex items-center gap-1">
           <Battery className="w-3 h-3" />
@@ -79,16 +74,16 @@ export function DeviceCard({ device, index }: DeviceCardProps) {
         </span>
         <span className="font-mono text-[10px]">{device.signal}</span>
         <span className={`ml-auto flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full ${
-          device.doorStatus === "closed"
+          device.door_status === "closed"
             ? "bg-success/10 text-success"
             : "bg-destructive/10 text-destructive"
         }`}>
-          {device.doorStatus === "closed" ? (
+          {device.door_status === "closed" ? (
             <Lock className="w-3 h-3" />
           ) : (
             <LockOpen className="w-3 h-3" />
           )}
-          {device.doorStatus === "closed" ? "Fechada" : "Aberta"}
+          {device.door_status === "closed" ? "Fechada" : "Aberta"}
         </span>
       </div>
     </motion.div>
