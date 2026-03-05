@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Thermometer, Droplets, Battery, Lock, LockOpen, Brain, AlertTriangle } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import type { Device } from "@/hooks/useDevices";
 
 const statusConfig = {
@@ -14,6 +15,7 @@ interface DeviceCardProps {
 }
 
 export function DeviceCard({ device, index }: DeviceCardProps) {
+  const navigate = useNavigate();
   const status = statusConfig[device.status];
   const isNegative = device.temperature < 0;
   const isCritical = device.anomaly;
@@ -23,7 +25,8 @@ export function DeviceCard({ device, index }: DeviceCardProps) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.05, duration: 0.4 }}
-      className={`card-sensor group relative overflow-hidden ${
+      onClick={() => navigate(`/device/${device.id}`)}
+      className={`card-sensor group relative overflow-hidden cursor-pointer ${
         isCritical ? "border-warning/30" : ""
       }`}
     >
