@@ -1,12 +1,13 @@
 import { motion } from "framer-motion";
 import { LayoutDashboard, Radio, Settings, Cpu, Brain, ChevronRight } from "lucide-react";
+import { useNavigate, useLocation } from "react-router-dom";
 import type { Device } from "@/hooks/useDevices";
 
 const navItems = [
-  { label: "Visão Geral", icon: LayoutDashboard, active: true, section: "MONITORAMENTO" },
-  { label: "Gateways", icon: Radio, active: false },
-  { label: "Setores", icon: Settings, active: false, section: "GERENCIAMENTO" },
-  { label: "Insights IA", icon: Brain, active: false, section: "INTELIGÊNCIA" },
+  { label: "Visão Geral", icon: LayoutDashboard, path: "/", section: "MONITORAMENTO" },
+  { label: "Gateways", icon: Radio, path: "/gateways" },
+  { label: "Setores", icon: Settings, path: "/setores", section: "GERENCIAMENTO" },
+  { label: "Insights IA", icon: Brain, path: "/insights", section: "INTELIGÊNCIA" },
 ];
 
 interface SidebarProps {
@@ -14,10 +15,13 @@ interface SidebarProps {
 }
 
 export function Sidebar({ devices }: SidebarProps) {
+  const navigate = useNavigate();
+  const location = useLocation();
+
   return (
     <aside className="w-64 min-h-screen bg-sidebar border-r border-sidebar-border flex flex-col shrink-0">
       <div className="p-5 border-b border-sidebar-border">
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-2.5 cursor-pointer" onClick={() => navigate("/")}>
           <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center">
             <Cpu className="w-5 h-5 text-primary" />
           </div>
@@ -29,27 +33,31 @@ export function Sidebar({ devices }: SidebarProps) {
       </div>
 
       <nav className="flex-1 p-3 space-y-1">
-        {navItems.map((item) => (
-          <div key={item.label}>
-            {item.section && (
-              <p className="text-[10px] font-semibold text-muted-foreground tracking-widest uppercase px-3 mt-4 mb-2">
-                {item.section}
-              </p>
-            )}
-            <motion.button
-              whileHover={{ x: 2 }}
-              className={`w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm transition-colors ${
-                item.active
-                  ? "bg-primary/10 text-primary font-medium"
-                  : "text-sidebar-foreground hover:bg-sidebar-accent"
-              }`}
-            >
-              <item.icon className="w-4 h-4" />
-              {item.label}
-              {item.active && <ChevronRight className="w-3.5 h-3.5 ml-auto opacity-60" />}
-            </motion.button>
-          </div>
-        ))}
+        {navItems.map((item) => {
+          const isActive = location.pathname === item.path;
+          return (
+            <div key={item.label}>
+              {item.section && (
+                <p className="text-[10px] font-semibold text-muted-foreground tracking-widest uppercase px-3 mt-4 mb-2">
+                  {item.section}
+                </p>
+              )}
+              <motion.button
+                whileHover={{ x: 2 }}
+                onClick={() => navigate(item.path)}
+                className={`w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm transition-colors ${
+                  isActive
+                    ? "bg-primary/10 text-primary font-medium"
+                    : "text-sidebar-foreground hover:bg-sidebar-accent"
+                }`}
+              >
+                <item.icon className="w-4 h-4" />
+                {item.label}
+                {isActive && <ChevronRight className="w-3.5 h-3.5 ml-auto opacity-60" />}
+              </motion.button>
+            </div>
+          );
+        })}
 
         <p className="text-[10px] font-semibold text-muted-foreground tracking-widest uppercase px-3 mt-6 mb-2">
           DISPOSITIVOS ({devices.length})
@@ -58,7 +66,12 @@ export function Sidebar({ devices }: SidebarProps) {
           {devices.map((device) => (
             <button
               key={device.id}
-              className="w-full flex items-center gap-2 px-3 py-1.5 rounded-md text-xs text-sidebar-foreground hover:bg-sidebar-accent transition-colors"
+              onClick={() => navigate(`/device/${device.id}`)}
+              className={`w-full flex items-center gap-2 px-3 py-1.5 rounded-md text-xs transition-colors ${
+                location.pathname === `/device/${device.id}`
+                  ? "bg-primary/10 text-primary font-medium"
+                  : "text-sidebar-foreground hover:bg-sidebar-accent"
+              }`}
             >
               <span
                 className={`w-2 h-2 rounded-full shrink-0 ${
