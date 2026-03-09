@@ -6,28 +6,28 @@
 
 @layer base {
   :root {
-    /* Fundo: #E5E7EB */
-    --background: 220 13% 91%;
-    /* Texto Principal / Cabeçalho / Menu: #4B5563 */
-    --foreground: 220 13% 34%;
+    /* Fundo: #F3F4F6 */
+    --background: 220 14% 96%;
+    /* Texto Principal */
+    --foreground: 220 13% 26%;
 
     /* Cards: #FFFFFF */
     --card: 0 0% 100%;
-    --card-foreground: 220 13% 34%;
+    --card-foreground: 220 13% 26%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 220 13% 34%;
+    --popover-foreground: 220 13% 26%;
 
-    /* Primary = Status Normal verde #22C55E */
+    /* Primary = Verde #22C55E */
     --primary: 142 71% 45%;
     --primary-foreground: 0 0% 100%;
 
-    /* Secondary = Fundo claro */
-    --secondary: 220 13% 95%;
-    --secondary-foreground: 220 13% 34%;
+    /* Secondary */
+    --secondary: 220 14% 96%;
+    --secondary-foreground: 220 13% 26%;
 
-    /* Muted = Texto Leve #6B7280 */
-    --muted: 220 9% 83%;
+    /* Muted */
+    --muted: 220 13% 91%;
     --muted-foreground: 220 9% 46%;
 
     --accent: 142 71% 45%;
@@ -50,20 +50,20 @@
     --maintenance-foreground: 0 0% 100%;
 
     /* Borders */
-    --border: 220 13% 86%;
-    --input: 220 13% 86%;
+    --border: 220 13% 90%;
+    --input: 220 13% 90%;
     --ring: 142 71% 45%;
 
     --radius: 0.75rem;
 
-    /* Sidebar = Texto Principal #4B5563 fundo */
-    --sidebar-background: 220 13% 34%;
-    --sidebar-foreground: 220 9% 75%;
+    /* Sidebar = Claro como na referência */
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 220 13% 26%;
     --sidebar-primary: 142 71% 45%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 220 13% 28%;
-    --sidebar-accent-foreground: 220 9% 90%;
-    --sidebar-border: 220 13% 28%;
+    --sidebar-accent: 220 14% 96%;
+    --sidebar-accent-foreground: 220 13% 26%;
+    --sidebar-border: 220 13% 91%;
     --sidebar-ring: 142 71% 45%;
 
     --font-display: 'Inter', system-ui, sans-serif;
