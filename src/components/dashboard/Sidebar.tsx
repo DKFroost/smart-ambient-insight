@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { LayoutDashboard, Radio, Settings, Cpu, Brain, ChevronRight } from "lucide-react";
+import { LayoutDashboard, Radio, Settings, Cpu, Brain, ChevronRight, MapPin } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import type { Device } from "@/hooks/useDevices";
 
