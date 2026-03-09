@@ -23,8 +23,8 @@ export function Sidebar({ devices }: SidebarProps) {
     <aside className="w-64 min-h-screen bg-sidebar border-r border-sidebar-border flex flex-col shrink-0">
       <div className="p-5 border-b border-sidebar-border">
         <div className="flex items-center gap-2.5 cursor-pointer" onClick={() => navigate("/")}>
-          <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center">
-            <Cpu className="w-5 h-5 text-primary" />
+          <div className="w-9 h-9 rounded-lg bg-sidebar-primary/10 flex items-center justify-center">
+            <Cpu className="w-5 h-5 text-sidebar-primary" />
           </div>
           <div>
             <h1 className="text-sm font-bold text-foreground tracking-tight">Alcate-IA</h1>
