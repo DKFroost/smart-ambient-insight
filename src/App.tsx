@@ -7,6 +7,7 @@ import Index from "./pages/Index";
 import DeviceDetail from "./pages/DeviceDetail";
 import Gateways from "./pages/Gateways";
 import Setores from "./pages/Setores";
+import Rastreamento from "./pages/Rastreamento";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
