@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { DashboardHeader } from "@/components/dashboard/DashboardHeader";
 import { useDevices } from "@/hooks/useDevices";
-import { Search, MapPin, Thermometer, Battery, Truck, Navigation, Signal, Clock, Droplets, DoorOpen, DoorClosed } from "lucide-react";
+import { Search, MapPin, Thermometer, Battery, Truck, Navigation, Signal, Droplets, DoorOpen, DoorClosed } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 
