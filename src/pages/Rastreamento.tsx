@@ -44,9 +44,9 @@ const Rastreamento = () => {
   };
 
   const getStatusLabel = (status: string) => {
-    if (status === "online") return "Em trânsito";
+    if (status === "online") return "Online";
     if (status === "maintenance") return "Manutenção";
-    return "Parado";
+    return "Offline";
   };
 
   return (
