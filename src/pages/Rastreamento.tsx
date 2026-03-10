@@ -147,7 +147,7 @@ const Rastreamento = () => {
                         <Battery className="w-3 h-3" /> {truck.battery}%
                       </span>
                       <span className="flex items-center gap-1">
-                        <Clock className="w-3 h-3" /> {loc.lastUpdate}
+                        <Signal className="w-3 h-3" /> {truck.signal}
                       </span>
                     </div>
                   </motion.button>
