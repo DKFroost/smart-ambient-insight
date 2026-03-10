@@ -1,5 +1,6 @@
 import { Wifi, Brain, Sparkles } from "lucide-react";
 import type { Device } from "@/hooks/useDevices";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 interface DashboardHeaderProps {
   devices: Device[];
@@ -36,6 +37,8 @@ export function DashboardHeader({ devices }: DashboardHeaderProps) {
             Online <span className="text-foreground font-semibold">({onlineCount}/{devices.length})</span>
           </span>
         </div>
+
+        <ThemeToggle />
       </div>
     </header>
   );
