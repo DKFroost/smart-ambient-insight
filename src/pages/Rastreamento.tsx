@@ -3,13 +3,13 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { DashboardHeader } from "@/components/dashboard/DashboardHeader";
 import { useDevices } from "@/hooks/useDevices";
-import { Search, MapPin, Thermometer, Battery, Truck, Navigation, Signal, Clock, Droplets, DoorOpen, DoorClosed } from "lucide-react";
+import { Search, MapPin, Thermometer, Battery, Truck, Navigation, Signal, Droplets, DoorOpen, DoorClosed } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 
-const MOCK_LOCATIONS: Record<string, { lat: number; lng: number; address: string; speed: number; lastUpdate: string }> = {
-  "Caminhão": { lat: -23.5505, lng: -46.6333, address: "Av. Paulista, 1000 - São Paulo, SP", speed: 62, lastUpdate: "há 2 min" },
-  "Caminhão RLK": { lat: -22.9068, lng: -43.1729, address: "Rod. Pres. Dutra, KM 150 - RJ", speed: 85, lastUpdate: "há 1 min" },
+const MOCK_LOCATIONS: Record<string, { lat: number; lng: number; address: string; lastUpdate: string }> = {
+  "Caminhão": { lat: -23.5505, lng: -46.6333, address: "Av. Paulista, 1000 - São Paulo, SP", lastUpdate: "há 2 min" },
+  "Caminhão RLK": { lat: -22.9068, lng: -43.1729, address: "Rod. Pres. Dutra, KM 150 - RJ", lastUpdate: "há 1 min" },
 };
 
 const Rastreamento = () => {
@@ -34,7 +34,7 @@ const Rastreamento = () => {
 
   const getLocation = (name: string) => {
     const key = Object.keys(MOCK_LOCATIONS).find((k) => name.includes(k));
-    return key ? MOCK_LOCATIONS[key] : { lat: -23.55, lng: -46.63, address: "Localização não definida", speed: 0, lastUpdate: "N/A" };
+    return key ? MOCK_LOCATIONS[key] : { lat: -23.55, lng: -46.63, address: "Localização não definida", lastUpdate: "N/A" };
   };
 
   const getStatusColor = (status: string) => {
@@ -44,9 +44,9 @@ const Rastreamento = () => {
   };
 
   const getStatusLabel = (status: string) => {
-    if (status === "online") return "Em trânsito";
+    if (status === "online") return "Online";
     if (status === "maintenance") return "Manutenção";
-    return "Parado";
+    return "Offline";
   };
 
   return (
@@ -69,11 +69,10 @@ const Rastreamento = () => {
             </div>
 
             {/* Resumo rápido */}
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-2 gap-2">
               {[
                 { label: "Total", value: trucks.length, color: "bg-sidebar-primary/10 text-sidebar-primary" },
-                { label: "Em trânsito", value: trucks.filter(t => t.status === "online").length, color: "bg-success/10 text-success" },
-                { label: "Parados", value: trucks.filter(t => t.status !== "online").length, color: "bg-destructive/10 text-destructive" },
+                { label: "Online", value: trucks.filter(t => t.status === "online").length, color: "bg-success/10 text-success" },
               ].map((stat) => (
                 <div key={stat.label} className={`rounded-lg p-2.5 text-center ${stat.color}`}>
                   <p className="text-lg font-bold font-mono">{stat.value}</p>
@@ -148,7 +147,7 @@ const Rastreamento = () => {
                         <Battery className="w-3 h-3" /> {truck.battery}%
                       </span>
                       <span className="flex items-center gap-1">
-                        <Clock className="w-3 h-3" /> {loc.lastUpdate}
+                        <Signal className="w-3 h-3" /> {truck.signal}
                       </span>
                     </div>
                   </motion.button>
@@ -216,8 +215,8 @@ const Rastreamento = () => {
                             <p className="text-xs font-semibold text-foreground">{truck.name}</p>
                             <div className="flex gap-3 mt-1 text-[10px] text-muted-foreground">
                               <span>{truck.temperature}°C</span>
+                              <span>{truck.humidity}%</span>
                               <span>{truck.battery}%</span>
-                              <span>{getLocation(truck.name).speed} km/h</span>
                             </div>
                           </motion.div>
                         )}
@@ -281,7 +280,6 @@ const Rastreamento = () => {
                         { label: "Umidade", value: `${selectedTruck.humidity}%`, icon: Droplets },
                         { label: "Bateria", value: `${selectedTruck.battery}%`, icon: Battery },
                         { label: "Porta", value: selectedTruck.door_status === "open" ? "Aberta" : "Fechada", icon: selectedTruck.door_status === "open" ? DoorOpen : DoorClosed },
-                        { label: "Velocidade", value: `${getLocation(selectedTruck.name).speed} km/h`, icon: Navigation },
                         { label: "Sinal", value: selectedTruck.signal ?? "N/A", icon: Signal },
                       ].map((item) => (
                         <div key={item.label} className="text-center">
