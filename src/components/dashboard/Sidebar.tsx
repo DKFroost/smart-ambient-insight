@@ -48,7 +48,7 @@ export function Sidebar({ devices }: SidebarProps) {
                 onClick={() => navigate(item.path)}
                 className={`w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm transition-colors ${
                   isActive
-                    ? "bg-primary/10 text-primary font-medium"
+                    ? "bg-sidebar-accent text-sidebar-primary font-medium"
                     : "text-sidebar-foreground hover:bg-sidebar-accent"
                 }`}
               >
@@ -70,7 +70,7 @@ export function Sidebar({ devices }: SidebarProps) {
               onClick={() => navigate(`/device/${device.id}`)}
               className={`w-full flex items-center gap-2 px-3 py-1.5 rounded-md text-xs transition-colors ${
                 location.pathname === `/device/${device.id}`
-                  ? "bg-primary/10 text-primary font-medium"
+                  ? "bg-sidebar-accent text-sidebar-primary font-medium"
                   : "text-sidebar-foreground hover:bg-sidebar-accent"
               }`}
             >
