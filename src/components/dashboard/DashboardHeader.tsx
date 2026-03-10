@@ -1,5 +1,6 @@
 import { Wifi, Brain, Sparkles } from "lucide-react";
 import type { Device } from "@/hooks/useDevices";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 interface DashboardHeaderProps {
   devices: Device[];
