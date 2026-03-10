@@ -7,9 +7,9 @@ import { Search, MapPin, Thermometer, Battery, Truck, Navigation, Signal, Drople
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 
-const MOCK_LOCATIONS: Record<string, { lat: number; lng: number; address: string; speed: number; lastUpdate: string }> = {
-  "Caminhão": { lat: -23.5505, lng: -46.6333, address: "Av. Paulista, 1000 - São Paulo, SP", speed: 62, lastUpdate: "há 2 min" },
-  "Caminhão RLK": { lat: -22.9068, lng: -43.1729, address: "Rod. Pres. Dutra, KM 150 - RJ", speed: 85, lastUpdate: "há 1 min" },
+const MOCK_LOCATIONS: Record<string, { lat: number; lng: number; address: string; lastUpdate: string }> = {
+  "Caminhão": { lat: -23.5505, lng: -46.6333, address: "Av. Paulista, 1000 - São Paulo, SP", lastUpdate: "há 2 min" },
+  "Caminhão RLK": { lat: -22.9068, lng: -43.1729, address: "Rod. Pres. Dutra, KM 150 - RJ", lastUpdate: "há 1 min" },
 };
 
 const Rastreamento = () => {
