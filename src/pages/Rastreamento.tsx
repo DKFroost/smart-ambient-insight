@@ -215,8 +215,8 @@ const Rastreamento = () => {
                             <p className="text-xs font-semibold text-foreground">{truck.name}</p>
                             <div className="flex gap-3 mt-1 text-[10px] text-muted-foreground">
                               <span>{truck.temperature}°C</span>
+                              <span>{truck.humidity}%</span>
                               <span>{truck.battery}%</span>
-                              <span>{getLocation(truck.name).speed} km/h</span>
                             </div>
                           </motion.div>
                         )}
