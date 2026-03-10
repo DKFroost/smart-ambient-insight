@@ -34,7 +34,7 @@ const Rastreamento = () => {
 
   const getLocation = (name: string) => {
     const key = Object.keys(MOCK_LOCATIONS).find((k) => name.includes(k));
-    return key ? MOCK_LOCATIONS[key] : { lat: -23.55, lng: -46.63, address: "Localização não definida", speed: 0, lastUpdate: "N/A" };
+    return key ? MOCK_LOCATIONS[key] : { lat: -23.55, lng: -46.63, address: "Localização não definida", lastUpdate: "N/A" };
   };
 
   const getStatusColor = (status: string) => {
