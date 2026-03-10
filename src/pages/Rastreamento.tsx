@@ -280,7 +280,6 @@ const Rastreamento = () => {
                         { label: "Umidade", value: `${selectedTruck.humidity}%`, icon: Droplets },
                         { label: "Bateria", value: `${selectedTruck.battery}%`, icon: Battery },
                         { label: "Porta", value: selectedTruck.door_status === "open" ? "Aberta" : "Fechada", icon: selectedTruck.door_status === "open" ? DoorOpen : DoorClosed },
-                        { label: "Velocidade", value: `${getLocation(selectedTruck.name).speed} km/h`, icon: Navigation },
                         { label: "Sinal", value: selectedTruck.signal ?? "N/A", icon: Signal },
                       ].map((item) => (
                         <div key={item.label} className="text-center">
