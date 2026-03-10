@@ -37,6 +37,8 @@ export function DashboardHeader({ devices }: DashboardHeaderProps) {
             Online <span className="text-foreground font-semibold">({onlineCount}/{devices.length})</span>
           </span>
         </div>
+
+        <ThemeToggle />
       </div>
     </header>
   );
