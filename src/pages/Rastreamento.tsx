@@ -69,11 +69,10 @@ const Rastreamento = () => {
             </div>
 
             {/* Resumo rápido */}
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-2 gap-2">
               {[
                 { label: "Total", value: trucks.length, color: "bg-sidebar-primary/10 text-sidebar-primary" },
-                { label: "Em trânsito", value: trucks.filter(t => t.status === "online").length, color: "bg-success/10 text-success" },
-                { label: "Parados", value: trucks.filter(t => t.status !== "online").length, color: "bg-destructive/10 text-destructive" },
+                { label: "Online", value: trucks.filter(t => t.status === "online").length, color: "bg-success/10 text-success" },
               ].map((stat) => (
                 <div key={stat.label} className={`rounded-lg p-2.5 text-center ${stat.color}`}>
                   <p className="text-lg font-bold font-mono">{stat.value}</p>
