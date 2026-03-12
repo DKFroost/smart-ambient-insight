@@ -2,6 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { useDevices } from "@/hooks/useDevices";
 import { Thermometer, Droplets, Battery, Lock, LockOpen, RefreshCw, Settings, FileText, MapPin } from "lucide-react";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import { useState } from "react";
 
