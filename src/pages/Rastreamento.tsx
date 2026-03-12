@@ -227,7 +227,7 @@ const Rastreamento = () => {
                         {/* Pulse ring para online */}
                         {truck.status === "online" && isSelected && (
                           <motion.div
-                            className="absolute inset-0 m-auto w-14 h-14 rounded-full border-2 border-sidebar-primary/30"
+                            className="absolute w-14 h-14 rounded-full border-2 border-sidebar-primary/30 top-1/2 left-1/2 -translate-x-[55%] -translate-y-1/2"
                             animate={{ scale: [1, 1.5], opacity: [0.6, 0] }}
                             transition={{ duration: 1.5, repeat: Infinity }}
                           />
