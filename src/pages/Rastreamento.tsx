@@ -232,12 +232,22 @@ const Rastreamento = () => {
                         />
                       )}
 
-                      <div className={`w-10 h-10 rounded-full flex items-center justify-center shadow-md transition-all ${
-                        isSelected
-                          ? "bg-sidebar-primary text-sidebar-primary-foreground scale-125"
-                          : "bg-card border-2 border-sidebar-primary/50 text-sidebar-primary"
-                      }`}>
-                        <Truck className="w-4 h-4" />
+                      <div className="relative">
+                        {/* Pulse ring para online */}
+                        {truck.status === "online" && isSelected && (
+                          <motion.div
+                            className="absolute inset-0 m-auto w-14 h-14 rounded-full border-2 border-sidebar-primary/30"
+                            animate={{ scale: [1, 1.5], opacity: [0.6, 0] }}
+                            transition={{ duration: 1.5, repeat: Infinity }}
+                          />
+                        )}
+                        <div className={`w-10 h-10 rounded-full flex items-center justify-center shadow-md transition-all ${
+                          isSelected
+                            ? "bg-sidebar-primary text-sidebar-primary-foreground scale-125"
+                            : "bg-card border-2 border-sidebar-primary/50 text-sidebar-primary"
+                        }`}>
+                          <Truck className="w-4 h-4" />
+                        </div>
                       </div>
                       <div className={`w-2 h-2 rounded-full mt-1 ${getStatusColor(truck.status)}`} />
                     </div>
