@@ -2,6 +2,7 @@ import { Sidebar } from "@/components/dashboard/Sidebar";
 import { useDevices } from "@/hooks/useDevices";
 import { useNavigate } from "react-router-dom";
 import { Monitor } from "lucide-react";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 // Mock gateway data
 const gatewaysData = [
@@ -42,8 +43,9 @@ const Gateways = () => {
             <span className="text-border">&gt;</span>
             <span>Gateways</span>
           </div>
-          <div className="flex items-center gap-2 text-xs text-muted-foreground">
-            <span>Online ({(devices ?? []).filter(d => d.status === "online").length}/{(devices ?? []).length})</span>
+          <div className="flex items-center gap-4">
+            <span className="text-xs text-muted-foreground">Online ({(devices ?? []).filter(d => d.status === "online").length}/{(devices ?? []).length})</span>
+            <ThemeToggle />
           </div>
         </header>
 
