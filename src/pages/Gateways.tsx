@@ -2,6 +2,7 @@ import { Sidebar } from "@/components/dashboard/Sidebar";
 import { useDevices } from "@/hooks/useDevices";
 import { useNavigate } from "react-router-dom";
 import { Monitor } from "lucide-react";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 // Mock gateway data
 const gatewaysData = [
