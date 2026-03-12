@@ -2,6 +2,7 @@ import { Sidebar } from "@/components/dashboard/Sidebar";
 import { useDevices } from "@/hooks/useDevices";
 import { useNavigate } from "react-router-dom";
 import { Pencil, Trash2, Plus } from "lucide-react";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { useState } from "react";
 
 const initialSectors = [
