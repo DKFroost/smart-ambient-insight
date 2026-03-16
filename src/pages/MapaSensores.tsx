@@ -71,13 +71,13 @@ const MapaSensores = () => {
     );
   }, [devices]);
 
-  // Group sensors by sector
+  // Group sensors by device name (each câmara/sala is its own group)
   const sectorGroups = useMemo(() => {
     const groups: Record<string, typeof sensors> = {};
     sensors.forEach((s) => {
-      const sector = getSector(s.name);
-      if (!groups[sector]) groups[sector] = [];
-      groups[sector].push(s);
+      const group = getGroupName(s.name);
+      if (!groups[group]) groups[group] = [];
+      groups[group].push(s);
     });
     return groups;
   }, [sensors]);
