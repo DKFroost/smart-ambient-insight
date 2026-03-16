@@ -188,19 +188,20 @@ const MapaSensores = () => {
               <h3 className="text-xs font-semibold text-muted-foreground tracking-widest uppercase">
                 Setores
               </h3>
-              {Object.entries(sectorGroups).map(([sector, sectorDevices]) => {
-                const onlineCount = sectorDevices.filter((d) => d.status === "online").length;
-                const alertCount = sectorDevices.filter((d) => d.anomaly).length;
+              {Object.entries(sectorGroups).map(([group, groupDevices], idx) => {
+                const onlineCount = groupDevices.filter((d) => d.status === "online").length;
+                const alertCount = groupDevices.filter((d) => d.anomaly).length;
+                const palette = GROUP_PALETTE[idx % GROUP_PALETTE.length];
                 return (
                   <div
-                    key={sector}
-                    className={`p-3 rounded-lg border ${SECTOR_COLORS[sector] ?? SECTOR_COLORS["Sem Setor"]}`}
+                    key={group}
+                    className={`p-3 rounded-lg border ${palette.border}`}
                   >
-                    <p className={`text-xs font-semibold ${SECTOR_LABEL_COLORS[sector] ?? SECTOR_LABEL_COLORS["Sem Setor"]}`}>
-                      {sector}
+                    <p className={`text-xs font-semibold ${palette.label}`}>
+                      {group}
                     </p>
                     <p className="text-[10px] text-muted-foreground mt-1">
-                      {sectorDevices.length} sensores · {onlineCount} online
+                      {onlineCount}/{groupDevices.length} online
                     </p>
                     {alertCount > 0 && (
                       <Badge variant="destructive" className="mt-1.5 text-[9px] h-4 px-1.5">
