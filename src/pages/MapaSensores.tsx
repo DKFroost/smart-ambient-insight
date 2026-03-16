@@ -27,40 +27,25 @@ interface SensorPosition {
   y: number; // percentage
 }
 
-// Mock sector assignments
-const SECTOR_MAP: Record<string, string> = {
-  "Câmara Fria": "Recebimento",
-  "Câmara Ultra Congelamento 01": "Produção",
-  "Câmara Ultra Congelamento 02": "Produção",
-  "Câmara Ultra Congelamento 03": "Produção",
-  "Câmara Ultra Congelamento 04": "Produção",
-  "Câmara Ultra Congelamento 05": "Expedição",
-  "Câmara Ultra Congelamento 06": "Expedição",
-  "Câmara Ultra Congelamento 07": "Expedição",
-  "Sala De Expedição": "Expedição",
-  "Sala Principal": "Principal",
-};
-
-const SECTOR_COLORS: Record<string, string> = {
-  Recebimento: "border-blue-400/40 bg-blue-400/5",
-  Produção: "border-violet-400/40 bg-violet-400/5",
-  Expedição: "border-amber-400/40 bg-amber-400/5",
-  Principal: "border-emerald-400/40 bg-emerald-400/5",
-  "Sem Setor": "border-border bg-muted/20",
-};
-
-const SECTOR_LABEL_COLORS: Record<string, string> = {
-  Recebimento: "text-blue-500",
-  Produção: "text-violet-500",
-  Expedição: "text-amber-600",
-  Principal: "text-emerald-500",
-  "Sem Setor": "text-muted-foreground",
-};
-
-function getSector(name: string): string {
-  const key = Object.keys(SECTOR_MAP).find((k) => name.includes(k));
-  return key ? SECTOR_MAP[key] : "Sem Setor";
+// Each device name IS the group (câmara/sala) — no need for manual sector mapping
+function getGroupName(name: string): string {
+  return name;
 }
+
+// Assign colors dynamically per group
+const GROUP_PALETTE = [
+  { border: "border-blue-400/40 bg-blue-400/5", label: "text-blue-500" },
+  { border: "border-violet-400/40 bg-violet-400/5", label: "text-violet-500" },
+  { border: "border-amber-400/40 bg-amber-400/5", label: "text-amber-600" },
+  { border: "border-emerald-400/40 bg-emerald-400/5", label: "text-emerald-500" },
+  { border: "border-rose-400/40 bg-rose-400/5", label: "text-rose-500" },
+  { border: "border-cyan-400/40 bg-cyan-400/5", label: "text-cyan-500" },
+  { border: "border-orange-400/40 bg-orange-400/5", label: "text-orange-500" },
+  { border: "border-indigo-400/40 bg-indigo-400/5", label: "text-indigo-500" },
+  { border: "border-pink-400/40 bg-pink-400/5", label: "text-pink-500" },
+  { border: "border-teal-400/40 bg-teal-400/5", label: "text-teal-500" },
+  { border: "border-lime-400/40 bg-lime-400/5", label: "text-lime-600" },
+];
 
 function getStatusStyle(status: string, anomaly: boolean) {
   if (anomaly) return { ring: "ring-destructive/60", bg: "bg-destructive/15 border-destructive/40", dot: "bg-destructive" };
@@ -86,13 +71,13 @@ const MapaSensores = () => {
     );
   }, [devices]);
 
-  // Group sensors by sector
+  // Group sensors by device name (each câmara/sala is its own group)
   const sectorGroups = useMemo(() => {
     const groups: Record<string, typeof sensors> = {};
     sensors.forEach((s) => {
-      const sector = getSector(s.name);
-      if (!groups[sector]) groups[sector] = [];
-      groups[sector].push(s);
+      const group = getGroupName(s.name);
+      if (!groups[group]) groups[group] = [];
+      groups[group].push(s);
     });
     return groups;
   }, [sensors]);
@@ -198,24 +183,25 @@ const MapaSensores = () => {
           </div>
 
           <div className="flex gap-6">
-            {/* Sector legend sidebar */}
+            {/* Câmaras legend sidebar */}
             <div className="w-52 shrink-0 space-y-4">
               <h3 className="text-xs font-semibold text-muted-foreground tracking-widest uppercase">
-                Setores
+                Câmaras / Salas
               </h3>
-              {Object.entries(sectorGroups).map(([sector, sectorDevices]) => {
-                const onlineCount = sectorDevices.filter((d) => d.status === "online").length;
-                const alertCount = sectorDevices.filter((d) => d.anomaly).length;
+              {Object.entries(sectorGroups).map(([group, groupDevices], idx) => {
+                const onlineCount = groupDevices.filter((d) => d.status === "online").length;
+                const alertCount = groupDevices.filter((d) => d.anomaly).length;
+                const palette = GROUP_PALETTE[idx % GROUP_PALETTE.length];
                 return (
                   <div
-                    key={sector}
-                    className={`p-3 rounded-lg border ${SECTOR_COLORS[sector] ?? SECTOR_COLORS["Sem Setor"]}`}
+                    key={group}
+                    className={`p-3 rounded-lg border ${palette.border}`}
                   >
-                    <p className={`text-xs font-semibold ${SECTOR_LABEL_COLORS[sector] ?? SECTOR_LABEL_COLORS["Sem Setor"]}`}>
-                      {sector}
+                    <p className={`text-xs font-semibold ${palette.label}`}>
+                      {group}
                     </p>
                     <p className="text-[10px] text-muted-foreground mt-1">
-                      {sectorDevices.length} sensores · {onlineCount} online
+                      {onlineCount}/{groupDevices.length} online
                     </p>
                     {alertCount > 0 && (
                       <Badge variant="destructive" className="mt-1.5 text-[9px] h-4 px-1.5">
@@ -373,7 +359,7 @@ const MapaSensores = () => {
                               </Badge>
                             </div>
                             <div className="text-[10px] text-muted-foreground mb-2">
-                              Setor: <span className="text-foreground font-medium">{getSector(hoveredDevice.name)}</span>
+                              Câmara: <span className="text-foreground font-medium">{hoveredDevice.name}</span>
                             </div>
                             <div className="grid grid-cols-2 gap-2">
                               <div className="flex items-center gap-1.5 text-[10px]">
