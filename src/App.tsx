@@ -9,6 +9,7 @@ import DeviceDetail from "./pages/DeviceDetail";
 import Gateways from "./pages/Gateways";
 import Setores from "./pages/Setores";
 import Rastreamento from "./pages/Rastreamento";
+import MapaSensores from "./pages/MapaSensores";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -23,6 +24,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/device/:id" element={<DeviceDetail />} />
+            <Route path="/mapa" element={<MapaSensores />} />
             <Route path="/gateways" element={<Gateways />} />
             <Route path="/setores" element={<Setores />} />
             <Route path="/rastreamento" element={<Rastreamento />} />

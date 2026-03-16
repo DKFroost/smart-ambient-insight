@@ -1,10 +1,11 @@
 import { motion } from "framer-motion";
-import { LayoutDashboard, Radio, Settings, Cpu, Brain, ChevronRight, MapPin } from "lucide-react";
+import { LayoutDashboard, Radio, Settings, Cpu, Brain, ChevronRight, MapPin, Map } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import type { Device } from "@/hooks/useDevices";
 
 const navItems = [
   { label: "Visão Geral", icon: LayoutDashboard, path: "/", section: "MONITORAMENTO" },
+  { label: "Mapa de Sensores", icon: Map, path: "/mapa" },
   { label: "Gateways", icon: Radio, path: "/gateways" },
   { label: "Setores", icon: Settings, path: "/setores", section: "GERENCIAMENTO" },
   { label: "Rastreamento", icon: MapPin, path: "/rastreamento" },
