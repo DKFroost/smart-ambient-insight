@@ -97,16 +97,18 @@ const MapaSensores = () => {
     return groups;
   }, [sensors]);
 
-  // Auto-distribute sensors on the map if no positions set
+  // Merge manual positions with auto-generated ones for sensors without a position
   const effectivePositions = useMemo(() => {
-    if (positions.length > 0) return positions;
-    // Auto layout in a grid
     const cols = Math.ceil(Math.sqrt(sensors.length));
-    return sensors.map((s, i) => ({
-      deviceId: s.id,
-      x: 15 + (i % cols) * (70 / Math.max(cols, 1)),
-      y: 15 + Math.floor(i / cols) * (70 / Math.max(Math.ceil(sensors.length / cols), 1)),
-    }));
+    return sensors.map((s, i) => {
+      const manual = positions.find((p) => p.deviceId === s.id);
+      if (manual) return manual;
+      return {
+        deviceId: s.id,
+        x: 15 + (i % cols) * (70 / Math.max(cols, 1)),
+        y: 15 + Math.floor(i / cols) * (70 / Math.max(Math.ceil(sensors.length / cols), 1)),
+      };
+    });
   }, [sensors, positions]);
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
