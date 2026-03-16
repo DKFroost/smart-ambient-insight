@@ -183,10 +183,10 @@ const MapaSensores = () => {
           </div>
 
           <div className="flex gap-6">
-            {/* Sector legend sidebar */}
+            {/* Câmaras legend sidebar */}
             <div className="w-52 shrink-0 space-y-4">
               <h3 className="text-xs font-semibold text-muted-foreground tracking-widest uppercase">
-                Setores
+                Câmaras / Salas
               </h3>
               {Object.entries(sectorGroups).map(([group, groupDevices], idx) => {
                 const onlineCount = groupDevices.filter((d) => d.status === "online").length;
