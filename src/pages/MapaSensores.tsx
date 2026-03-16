@@ -359,7 +359,7 @@ const MapaSensores = () => {
                               </Badge>
                             </div>
                             <div className="text-[10px] text-muted-foreground mb-2">
-                              Setor: <span className="text-foreground font-medium">{getSector(hoveredDevice.name)}</span>
+                              Câmara: <span className="text-foreground font-medium">{hoveredDevice.name}</span>
                             </div>
                             <div className="grid grid-cols-2 gap-2">
                               <div className="flex items-center gap-1.5 text-[10px]">
