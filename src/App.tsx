@@ -24,6 +24,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/device/:id" element={<DeviceDetail />} />
+            <Route path="/mapa" element={<MapaSensores />} />
             <Route path="/gateways" element={<Gateways />} />
             <Route path="/setores" element={<Setores />} />
             <Route path="/rastreamento" element={<Rastreamento />} />
