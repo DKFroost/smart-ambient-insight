@@ -5,7 +5,7 @@ import type { Device } from "@/hooks/useDevices";
 
 const navItems = [
   { label: "Visão Geral", icon: LayoutDashboard, path: "/", section: "MONITORAMENTO" },
-  { label: "Gateways", icon: Radio, path: "/gateways" },
+  { label: "Mapa de Sensores", icon: Map, path: "/mapa" },
   { label: "Setores", icon: Settings, path: "/setores", section: "GERENCIAMENTO" },
   { label: "Rastreamento", icon: MapPin, path: "/rastreamento" },
   { label: "Insights IA", icon: Brain, path: "/insights", section: "INTELIGÊNCIA" },
