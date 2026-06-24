@@ -180,6 +180,40 @@ const Rastreamento = () => {
               </p>
             </div>
 
+            {/* Menu de cenários de teste */}
+            <div className="rounded-xl border border-border bg-card p-3">
+              <div className="flex items-center gap-2 mb-2.5">
+                <FlaskConical className="w-3.5 h-3.5 text-sidebar-primary" />
+                <span className="text-[11px] font-semibold uppercase tracking-wide text-foreground">
+                  Cenário de teste
+                </span>
+              </div>
+              <div className="grid grid-cols-2 gap-1.5">
+                {SCENARIOS.map((s) => {
+                  const Icon = s.icon;
+                  const active = scenario === s.id;
+                  return (
+                    <button
+                      key={s.id}
+                      onClick={() => setScenario(s.id)}
+                      title={s.description}
+                      className={`flex items-center gap-1.5 rounded-lg border px-2 py-1.5 text-left transition-all ${
+                        active
+                          ? s.accent + " font-semibold shadow-sm"
+                          : "border-border bg-muted/30 text-muted-foreground hover:bg-muted/60"
+                      }`}
+                    >
+                      <Icon className="w-3.5 h-3.5 shrink-0" />
+                      <span className="text-[10.5px] leading-tight">{s.label}</span>
+                    </button>
+                  );
+                })}
+              </div>
+              <p className="mt-2 text-[10px] text-muted-foreground leading-snug">
+                {SCENARIOS.find((s) => s.id === scenario)?.description}
+              </p>
+            </div>
+
             <div className="grid grid-cols-3 gap-2">
               {[
                 { label: "Total", value: trucks.length, color: "bg-sidebar-primary/10 text-sidebar-primary" },
