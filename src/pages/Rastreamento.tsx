@@ -101,12 +101,19 @@ const Rastreamento = () => {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [zoom, setZoom] = useState(1);
   const [progress, setProgress] = useState<Record<string, number>>({});
+  const [scenario, setScenario] = useState<ScenarioId>("normal");
 
-  const trucks = useMemo(() => {
+  const rawTrucks = useMemo(() => {
     return (devices ?? []).filter((d) =>
       d.name.toLowerCase().includes("caminhão") || d.name.toLowerCase().includes("caminhao")
     );
   }, [devices]);
+
+  // Apply current test-scenario overlay to every truck
+  const trucks = useMemo(
+    () => rawTrucks.map((t, i) => applyScenario(t, i, scenario)),
+    [rawTrucks, scenario]
+  );
 
   const filtered = useMemo(() => {
     if (!search.trim()) return trucks;
@@ -115,22 +122,23 @@ const Rastreamento = () => {
 
   const selectedTruck = filtered.find((t) => t.id === selectedId) ?? null;
 
-  // Animate trucks along their routes
+  // Animate trucks along their routes — speed depends on scenario
   useEffect(() => {
     if (trucks.length === 0) return;
+    const speed = scenario === "delay" ? 0.0009 : 0.0035;
     const interval = setInterval(() => {
       setProgress((prev) => {
         const next: Record<string, number> = { ...prev };
         trucks.forEach((t, i) => {
           const seed = (i + 1) * 0.13;
           const current = next[t.id] ?? seed;
-          next[t.id] = current >= 0.98 ? 0 : current + 0.0035;
+          next[t.id] = current >= 0.98 ? 0 : current + speed;
         });
         return next;
       });
     }, 80);
     return () => clearInterval(interval);
-  }, [trucks]);
+  }, [trucks, scenario]);
 
   const getStatusColor = (status: string) => {
     if (status === "online") return "bg-success";
