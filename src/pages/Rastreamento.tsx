@@ -6,11 +6,58 @@ import { useDevices } from "@/hooks/useDevices";
 import {
   Search, MapPin, Thermometer, Battery, Truck, Navigation, Signal,
   Droplets, DoorOpen, DoorClosed, Gauge, Clock, Route as RouteIcon,
-  Plus, Minus, Crosshair, Activity, AlertTriangle
+  Plus, Minus, Crosshair, Activity, AlertTriangle, FlaskConical,
+  CheckCircle2, BatteryLow, TimerOff
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import type { Device } from "@/hooks/useDevices";
+
+type ScenarioId = "normal" | "temp" | "battery" | "delay";
+
+const SCENARIOS: {
+  id: ScenarioId;
+  label: string;
+  description: string;
+  icon: typeof CheckCircle2;
+  accent: string;
+}[] = [
+  { id: "normal",  label: "Normal",            description: "Operação dentro dos parâmetros",       icon: CheckCircle2, accent: "text-success border-success/40 bg-success/10" },
+  { id: "temp",    label: "Anomalia de temp.", description: "Temperaturas acima do limite seguro",  icon: Thermometer,  accent: "text-destructive border-destructive/40 bg-destructive/10" },
+  { id: "battery", label: "Bateria baixa",     description: "Veículos com bateria crítica",         icon: BatteryLow,   accent: "text-warning border-warning/40 bg-warning/10" },
+  { id: "delay",   label: "Rota atrasada",     description: "Movimento lento + porta aberta",       icon: TimerOff,     accent: "text-info border-info/40 bg-info/10" },
+];
+
+// Applies a test-scenario overlay on top of the real device data (display-only).
+function applyScenario(truck: Device, i: number, scenario: ScenarioId): Device {
+  if (scenario === "normal") return truck;
+  const seedA = (i * 37) % 100;
+  const seedB = (i * 53) % 100;
+  if (scenario === "temp") {
+    return {
+      ...truck,
+      temperature: Number((8 + (seedA / 100) * 6).toFixed(1)), // 8°C – 14°C
+      anomaly: true,
+      ai_insight: "Temperatura acima do limite seguro detectada. Verificar sistema de refrigeração imediatamente.",
+    };
+  }
+  if (scenario === "battery") {
+    return {
+      ...truck,
+      battery: Math.max(4, Math.round(5 + (seedB / 100) * 15)), // 5% – 20%
+      anomaly: true,
+      ai_insight: "Bateria em nível crítico. Encaminhar para recarga antes da próxima rota.",
+    };
+  }
+  // delay
+  return {
+    ...truck,
+    door_status: i % 2 === 0 ? "open" : truck.door_status,
+    anomaly: true,
+    ai_insight: "Rota atrasada — veículo abaixo da velocidade esperada e parada prolongada detectada.",
+  };
+}
 
 // Simulated route waypoints (% of map area) for each truck. The truck animates along these.
 const ROUTES: Record<string, { points: { x: number; y: number }[]; address: string; destination: string }> = {
