@@ -6,11 +6,58 @@ import { useDevices } from "@/hooks/useDevices";
 import {
   Search, MapPin, Thermometer, Battery, Truck, Navigation, Signal,
   Droplets, DoorOpen, DoorClosed, Gauge, Clock, Route as RouteIcon,
-  Plus, Minus, Crosshair, Activity, AlertTriangle
+  Plus, Minus, Crosshair, Activity, AlertTriangle, FlaskConical,
+  CheckCircle2, BatteryLow, TimerOff
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import type { Device } from "@/hooks/useDevices";
+
+type ScenarioId = "normal" | "temp" | "battery" | "delay";
+
+const SCENARIOS: {
+  id: ScenarioId;
+  label: string;
+  description: string;
+  icon: typeof CheckCircle2;
+  accent: string;
+}[] = [
+  { id: "normal",  label: "Normal",            description: "Operação dentro dos parâmetros",       icon: CheckCircle2, accent: "text-success border-success/40 bg-success/10" },
+  { id: "temp",    label: "Anomalia de temp.", description: "Temperaturas acima do limite seguro",  icon: Thermometer,  accent: "text-destructive border-destructive/40 bg-destructive/10" },
+  { id: "battery", label: "Bateria baixa",     description: "Veículos com bateria crítica",         icon: BatteryLow,   accent: "text-warning border-warning/40 bg-warning/10" },
+  { id: "delay",   label: "Rota atrasada",     description: "Movimento lento + porta aberta",       icon: TimerOff,     accent: "text-info border-info/40 bg-info/10" },
+];
+
+// Applies a test-scenario overlay on top of the real device data (display-only).
+function applyScenario(truck: Device, i: number, scenario: ScenarioId): Device {
+  if (scenario === "normal") return truck;
+  const seedA = (i * 37) % 100;
+  const seedB = (i * 53) % 100;
+  if (scenario === "temp") {
+    return {
+      ...truck,
+      temperature: Number((8 + (seedA / 100) * 6).toFixed(1)), // 8°C – 14°C
+      anomaly: true,
+      ai_insight: "Temperatura acima do limite seguro detectada. Verificar sistema de refrigeração imediatamente.",
+    };
+  }
+  if (scenario === "battery") {
+    return {
+      ...truck,
+      battery: Math.max(4, Math.round(5 + (seedB / 100) * 15)), // 5% – 20%
+      anomaly: true,
+      ai_insight: "Bateria em nível crítico. Encaminhar para recarga antes da próxima rota.",
+    };
+  }
+  // delay
+  return {
+    ...truck,
+    door_status: i % 2 === 0 ? "open" : truck.door_status,
+    anomaly: true,
+    ai_insight: "Rota atrasada — veículo abaixo da velocidade esperada e parada prolongada detectada.",
+  };
+}
 
 // Simulated route waypoints (% of map area) for each truck. The truck animates along these.
 const ROUTES: Record<string, { points: { x: number; y: number }[]; address: string; destination: string }> = {
@@ -54,12 +101,19 @@ const Rastreamento = () => {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [zoom, setZoom] = useState(1);
   const [progress, setProgress] = useState<Record<string, number>>({});
+  const [scenario, setScenario] = useState<ScenarioId>("normal");
 
-  const trucks = useMemo(() => {
+  const rawTrucks = useMemo(() => {
     return (devices ?? []).filter((d) =>
       d.name.toLowerCase().includes("caminhão") || d.name.toLowerCase().includes("caminhao")
     );
   }, [devices]);
+
+  // Apply current test-scenario overlay to every truck
+  const trucks = useMemo(
+    () => rawTrucks.map((t, i) => applyScenario(t, i, scenario)),
+    [rawTrucks, scenario]
+  );
 
   const filtered = useMemo(() => {
     if (!search.trim()) return trucks;
@@ -68,22 +122,23 @@ const Rastreamento = () => {
 
   const selectedTruck = filtered.find((t) => t.id === selectedId) ?? null;
 
-  // Animate trucks along their routes
+  // Animate trucks along their routes — speed depends on scenario
   useEffect(() => {
     if (trucks.length === 0) return;
+    const speed = scenario === "delay" ? 0.0009 : 0.0035;
     const interval = setInterval(() => {
       setProgress((prev) => {
         const next: Record<string, number> = { ...prev };
         trucks.forEach((t, i) => {
           const seed = (i + 1) * 0.13;
           const current = next[t.id] ?? seed;
-          next[t.id] = current >= 0.98 ? 0 : current + 0.0035;
+          next[t.id] = current >= 0.98 ? 0 : current + speed;
         });
         return next;
       });
     }, 80);
     return () => clearInterval(interval);
-  }, [trucks]);
+  }, [trucks, scenario]);
 
   const getStatusColor = (status: string) => {
     if (status === "online") return "bg-success";
@@ -122,6 +177,40 @@ const Rastreamento = () => {
               <h1 className="text-xl font-bold text-foreground">Rastreamento</h1>
               <p className="text-sm text-muted-foreground">
                 Clique em um caminhão para focar no mapa.
+              </p>
+            </div>
+
+            {/* Menu de cenários de teste */}
+            <div className="rounded-xl border border-border bg-card p-3">
+              <div className="flex items-center gap-2 mb-2.5">
+                <FlaskConical className="w-3.5 h-3.5 text-sidebar-primary" />
+                <span className="text-[11px] font-semibold uppercase tracking-wide text-foreground">
+                  Cenário de teste
+                </span>
+              </div>
+              <div className="grid grid-cols-2 gap-1.5">
+                {SCENARIOS.map((s) => {
+                  const Icon = s.icon;
+                  const active = scenario === s.id;
+                  return (
+                    <button
+                      key={s.id}
+                      onClick={() => setScenario(s.id)}
+                      title={s.description}
+                      className={`flex items-center gap-1.5 rounded-lg border px-2 py-1.5 text-left transition-all ${
+                        active
+                          ? s.accent + " font-semibold shadow-sm"
+                          : "border-border bg-muted/30 text-muted-foreground hover:bg-muted/60"
+                      }`}
+                    >
+                      <Icon className="w-3.5 h-3.5 shrink-0" />
+                      <span className="text-[10.5px] leading-tight">{s.label}</span>
+                    </button>
+                  );
+                })}
+              </div>
+              <p className="mt-2 text-[10px] text-muted-foreground leading-snug">
+                {SCENARIOS.find((s) => s.id === scenario)?.description}
               </p>
             </div>
 
